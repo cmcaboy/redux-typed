@@ -9,7 +9,11 @@
     "@types/react-dom": "16.8.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "typescript": "3.4.5"
   },
   "scripts": {
@@ -32,5 +36,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-redux": "^7.0.9",
+    "@types/react-router-dom": "^4.3.3",
+    "@types/redux": "^3.6.0",
+    "@types/redux-thunk": "^2.1.0",
+    "@types/uuid": "^3.4.4"
   }
 }
