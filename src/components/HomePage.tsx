@@ -56,7 +56,6 @@ interface LinkStateProps {
 interface LinkDispatchProps {
   startEditExpense: (expense: Expense) => void;
   startRemoveExpense: (id: string) => void;
-  startSetExpenses: (expenses: Expense[]) => void;
 }
 
 const mapStateToProps = (
@@ -71,8 +70,7 @@ const mapDispatchToProps = (
   ownProps: HomePageProps
 ): LinkDispatchProps => ({
   startEditExpense: bindActionCreators(startEditExpense, dispatch),
-  startRemoveExpense: bindActionCreators(startRemoveExpense, dispatch),
-  startSetExpenses: bindActionCreators(startSetExpenses, dispatch)
+  startRemoveExpense: bindActionCreators(startRemoveExpense, dispatch)
 });
 
 export default connect(
