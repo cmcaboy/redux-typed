@@ -5,15 +5,14 @@ export const addExpense = expense => ({
   expense
 });
 
-export const removeExpense = ({ id } = {}) => ({
+export const removeExpense = id => ({
   type: "REMOVE_EXPENSE",
   id
 });
 
-export const editExpense = (id, updates) => ({
+export const editExpense = expense => ({
   type: "EDIT_EXPENSE",
-  id,
-  updates
+  expense
 });
 
 export const setExpenses = expenses => ({
@@ -21,7 +20,7 @@ export const setExpenses = expenses => ({
   expenses
 });
 
-export const startAddExpense = expenseData => {
+export const startAddExpense = ({ description, note, amount, createdAt }) => {
   return (dispatch, getState) => {
     const {
       description = "",
@@ -42,13 +41,13 @@ export const startAddExpense = expenseData => {
   };
 };
 
-export const startRemoveExpense = ({ id } = {}) => {
+export const startRemoveExpense = id => {
   return (dispatch, getState) => {
     dispatch(removeExpense({ id }));
   };
 };
 
-export const startEditExpense = (id, updates) => {
+export const startEditExpense = expense => {
   return (dispatch, getState) => {
     dispatch(editExpense(id, updates));
   };

@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import { startEditExpense, startRemoveExpense } from "../actions/expenses";
 import expenses from "../reducers/expenses";
 
-export class EditExpensePage extends React.Component {
+export class HomePage extends React.Component {
   onEdit = expense => {
-    this.props.startEditExpense(this.props.expense.id, expense);
+    this.props.startEditExpense(expense);
   };
-  onRemove = () => {
-    this.props.startRemoveExpense({ id: this.props.expense.id });
+  onRemove = id => {
+    this.props.startRemoveExpense(id);
   };
   render() {
     const { expenses } = this.props;
@@ -16,9 +16,17 @@ export class EditExpensePage extends React.Component {
       <div>
         <h1>Expense Page</h1>
         <div>
-          <p>{expenses}</p>
-          <button onClick={this.onRemove}>Remove Expense</button>
-          <button onClick={this.onEdit}>Edit Expense</button>
+          {expenses.map(expense => (
+            <div>
+              <p>{expense.description}</p>
+              <p>{expense.amount}</p>
+              <p>{expense.note}</p>
+              <button onClick={() => this.onRemove(expense.id)}>
+                Remove Expense
+              </button>
+              <button onClick={() => this.onEdit(expense)}>Edit Expense</button>
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -37,4 +45,4 @@ const mapDispatchToProps = (dispatch, props) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(EditExpensePage);
+)(HomePage);
