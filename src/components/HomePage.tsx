@@ -1,10 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  startRemoveExpense,
-  startEditExpense,
-  startSetExpenses
-} from "../actions/expenses";
+import { startRemoveExpense, startEditExpense } from "../actions/expenses";
 import { Expense } from "../types/Expense";
 import { AppState } from "../store/configureStore";
 import { Dispatch, bindActionCreators } from "redux";
