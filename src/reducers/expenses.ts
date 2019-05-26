@@ -1,6 +1,12 @@
-const expensesReducerDefaultState = [];
+import { Expense } from "../types/Expense";
+import { ExpenseActionTypes } from "../types/actions";
 
-export default (state = expensesReducerDefaultState, action) => {
+const expensesReducerDefaultState: Expense[] = [];
+
+const expenseReducer = (
+  state = expensesReducerDefaultState,
+  action: ExpenseActionTypes
+): Expense[] => {
   switch (action.type) {
     case "ADD_EXPENSE":
       return [...state, action.expense];
@@ -8,10 +14,10 @@ export default (state = expensesReducerDefaultState, action) => {
       return state.filter(({ id }) => id !== action.id);
     case "EDIT_EXPENSE":
       return state.map(expense => {
-        if (expense.id === action.id) {
+        if (expense.id === action.expense.id) {
           return {
             ...expense,
-            ...action.updates
+            ...action.expense
           };
         } else {
           return expense;
@@ -23,3 +29,5 @@ export default (state = expensesReducerDefaultState, action) => {
       return state;
   }
 };
+
+export { expenseReducer };

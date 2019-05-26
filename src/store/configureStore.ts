@@ -1,14 +1,15 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-import expensesReducer from "../reducers/expenses";
+import thunk, { ThunkMiddleware } from "redux-thunk";
+import { expenseReducer } from "../reducers/expenses";
+import { AppActions } from "../types/actions";
 
-export default () => {
-  const store = createStore(
-    combineReducers({
-      expenses: expensesReducer
-    }),
-    applyMiddleware(thunk)
-  );
+export const rootReducer = combineReducers({
+  expenses: expenseReducer
+});
 
-  return store;
-};
+export type AppState = ReturnType<typeof rootReducer>;
+
+export const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk as ThunkMiddleware<AppState, AppActions>)
+);

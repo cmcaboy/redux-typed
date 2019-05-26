@@ -1,28 +1,42 @@
 import uuid from "uuid";
+import { Expense } from "../types/Expense";
+import {
+  ADD_EXPENSE,
+  AppActions,
+  REMOVE_EXPENSE,
+  EDIT_EXPENSE,
+  SET_EXPENSES
+} from "../types/actions";
+import { Dispatch } from "redux";
+import { AppState } from "../store/configureStore";
 
-export const addExpense = expense => ({
-  type: "ADD_EXPENSE",
+export const addExpense = (expense: Expense): AppActions => ({
+  type: ADD_EXPENSE,
   expense
 });
 
-export const removeExpense = ({ id } = {}) => ({
-  type: "REMOVE_EXPENSE",
+export const removeExpense = (id: string): AppActions => ({
+  type: REMOVE_EXPENSE,
   id
 });
 
-export const editExpense = (id, updates) => ({
-  type: "EDIT_EXPENSE",
-  id,
-  updates
+export const editExpense = (expense: Expense): AppActions => ({
+  type: EDIT_EXPENSE,
+  expense
 });
 
-export const setExpenses = expenses => ({
-  type: "SET_EXPENSES",
+export const setExpenses = (expenses: Expense[]): AppActions => ({
+  type: SET_EXPENSES,
   expenses
 });
 
-export const startAddExpense = expenseData => {
-  return (dispatch, getState) => {
+export const startAddExpense = (expenseData: {
+  description?: string;
+  note?: string;
+  amount?: number;
+  createdAt?: number;
+}) => {
+  return (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
     const {
       description = "",
       note = "",
@@ -33,7 +47,7 @@ export const startAddExpense = expenseData => {
 
     const id = uuid();
 
-    dispatch(
+    return dispatch(
       addExpense({
         id,
         ...expense
@@ -42,21 +56,20 @@ export const startAddExpense = expenseData => {
   };
 };
 
-export const startRemoveExpense = ({ id } = {}) => {
-  return (dispatch, getState) => {
-    dispatch(removeExpense({ id }));
+export const startRemoveExpense = (id: string) => {
+  return (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
+    dispatch(removeExpense(id));
   };
 };
 
-export const startEditExpense = (id, updates) => {
-  return (dispatch, getState) => {
-    dispatch(editExpense(id, updates));
+export const startEditExpense = (expense: Expense) => {
+  return (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
+    dispatch(editExpense(expense));
   };
 };
 
-export const startSetExpenses = expenses => {
-  //console.log(database);
-  return (dispatch, getState) => {
+export const startSetExpenses = (expenses: Expense[]) => {
+  return (dispatch: Dispatch<AppActions>, getState: () => AppState) => {
     dispatch(setExpenses(expenses));
   };
 };

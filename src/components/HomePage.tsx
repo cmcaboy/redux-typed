@@ -1,14 +1,31 @@
 import React from "react";
 import { connect } from "react-redux";
-import { startEditExpense, startRemoveExpense } from "../actions/expenses";
-import expenses from "../reducers/expenses";
+import {
+  startRemoveExpense,
+  startEditExpense,
+  startSetExpenses
+} from "../actions/expenses";
+import { Expense } from "../types/Expense";
+import { AppState } from "../store/configureStore";
+import { Dispatch, bindActionCreators } from "redux";
+import { AppActions } from "../types/actions";
+import { ThunkDispatch } from "redux-thunk";
 
-export class EditExpensePage extends React.Component {
-  onEdit = expense => {
-    this.props.startEditExpense(this.props.expense.id, expense);
+interface HomePageProps {
+  id?: string;
+  color?: string;
+}
+
+interface HomePageState {}
+
+type Props = HomePageProps & LinkStateProps & LinkDispatchProps;
+
+export class HomePagePage extends React.Component<Props, HomePageState> {
+  onEdit = (expense: Expense) => {
+    this.props.startEditExpense(expense);
   };
-  onRemove = () => {
-    this.props.startRemoveExpense({ id: this.props.expense.id });
+  onRemove = (id: string) => {
+    this.props.startRemoveExpense(id);
   };
   render() {
     const { expenses } = this.props;
@@ -16,25 +33,49 @@ export class EditExpensePage extends React.Component {
       <div>
         <h1>Expense Page</h1>
         <div>
-          <p>{expenses}</p>
-          <button onClick={this.onRemove}>Remove Expense</button>
-          <button onClick={this.onEdit}>Edit Expense</button>
+          {expenses.map(expense => (
+            <div>
+              <p>{expense.description}</p>
+              <p>{expense.amount}</p>
+              <p>{expense.note}</p>
+              <button onClick={() => this.onRemove(expense.id)}>
+                Remove Expense
+              </button>
+              <button onClick={() => this.onEdit(expense)}>Edit Expense</button>
+            </div>
+          ))}
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state, props) => ({
+interface LinkStateProps {
+  expenses: Expense[];
+}
+interface LinkDispatchProps {
+  startEditExpense: (expense: Expense) => void;
+  startRemoveExpense: (id: string) => void;
+  startSetExpenses: (expenses: Expense[]) => void;
+}
+
+const mapStateToProps = (
+  state: AppState,
+  ownProps: HomePageProps
+): LinkStateProps => ({
   expenses: state.expenses
 });
 
-const mapDispatchToProps = (dispatch, props) => ({
-  startEditExpense: (id, expense) => dispatch(startEditExpense(id, expense)),
-  startRemoveExpense: data => dispatch(startRemoveExpense(data))
+const mapDispatchToProps = (
+  dispatch: ThunkDispatch<any, any, AppActions>,
+  ownProps: HomePageProps
+): LinkDispatchProps => ({
+  startEditExpense: bindActionCreators(startEditExpense, dispatch),
+  startRemoveExpense: bindActionCreators(startRemoveExpense, dispatch),
+  startSetExpenses: bindActionCreators(startSetExpenses, dispatch)
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(EditExpensePage);
+)(HomePagePage);
